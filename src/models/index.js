@@ -2,14 +2,15 @@ const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
 const envConfigs =  require('../config');
-console.log("Env", envConfigs)
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
 
 const config = envConfigs[env];
-const db = {};
 
-// console.log(process.env);
+
+console.log(config.url)
+
+const db = {};
 
 let sequelize;
 if (config.url) {

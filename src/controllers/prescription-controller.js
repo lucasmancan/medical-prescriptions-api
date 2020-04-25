@@ -1,64 +1,67 @@
-'use strict';
-const models = require('../models');
+"use strict";
 
-exports.get = (req, res, next) => {
-  models.prescriptions.findAll()
-    .then(function (prescriptions) {
-      res.send({
-        success: true,
-        message: '',
-        data: prescriptions
-      });
-    })
+
+const repository = require("../repositories/prescription-repository");
+
+exports.get = async (req, res, next) => {
+  try {
+    const elements = await repository.findAll(req.userId);
+    res.status(200).send(elements);
+  } catch (e) {
+    next(e);
+  }
 };
 
-exports.getById = (req, res, next) => {
-   models.prescriptions.findById(req.params.id)
-    .then(function (prescriptions) {
-      res.send({
-        success: true,
-        message: '',
-        data: prescriptions
-      });
-    })
+exports.getByCustomerName = async (req, res, next) => {
+  try {
+    const elements = await repository.findByCustomerName(req.userId, req.query.customerName);
+    // const prescriptions = await models.sequelize.query("SELECT id, name FROM users where name like ?", { replacements: [ '%' + req.query.name+ '%'], type: models.sequelize.QueryTypes.SELECT });
+
+    res.status(200).send(elements);
+  } catch (error) {
+    next(error);
+  }
 };
 
+exports.getById = async (req, res, next) => {
+  try {
+    const element = await repository.getById(req.params.id);
 
-exports.post = (req, res, next) => {
-  models.countries.create(req.body)
-    .then(function () {
-      res.send({
-        success: true,
-        message: 'Prescription created',
-        data: null
-      });
-    })
+    res.status(200).send(element);
+  } catch (e) {
+    next(e);
+  }
 };
 
-exports.put = (req, res, next) => {
-  models.countries.update(req.body, {
-    where: {
-        id: req.body.id
-    }
-  }).then(() => {
+exports.post = async (req, res, next) => {
+  try {
+
+    const element = await repository.create(req.body);
+
+    res.status(201).send(element);
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.put = async (req, res, next) => {
+  try {
+    const element = await repository.update(req.userId, req.body);
+    res.status(200).send(element);
+  } catch (error) {
+    next(error)
+  }
+};
+
+exports.delete = async (req, res, next) => {
+  try {
+    await repository.inactivate(req.params.id);
     res.status(200).send({
       success: true,
-      message: 'Prescription updated!',
-      data: null
+      message: "",
+      data: null,
     });
-  });
-};
-
-exports.delete = (req, res, next) => {
-  models.countries.destroy({
-    where: {
-      id: req.params.id
-    }
-  }).then(() => {
-    res.status(200).send({
-      success: true,
-      message: 'Prescription deleted!',
-      data: null
-    });
-  });
+  } catch (error) {
+    next(error)
+  }
 };

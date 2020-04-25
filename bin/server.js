@@ -3,11 +3,11 @@ const http = require('http');
 const debug = require('debug')('node-api:server');
 const models = require('../src/models');
 global.API_KEY = "ASDASDASDASDS";
-const port = normalizePort(process.env.PORT || '3000');
+const port = normalizePort(process.env.PORT || '8080');
 
 const server = http.createServer(app);
 
-models.sequelize.sync({force:true}).then(function() {
+models.sequelize.sync({force:false}).then(function() {
   server.listen(port, function() {
     debug('Server is listening at ' + server.address().port);
   });
