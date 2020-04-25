@@ -1,78 +1,64 @@
-'use strict';
-const models = require('../models');
+"use strict";
 
-exports.get = (req, res, next) => {
-  models.drugs.findAll()
-    .then(function (drugs) {
-      res.send({
-        success: true,
-        message: '',
-        data: drugs
-      });
-    })
+
+const repository = require("../repositories/drug-repository");
+
+exports.get = async (req, res, next) => {
+  try {
+    const elements = await repository.findAll(req.userId);
+
+    res.status(200).send(elements);
+  } catch (e) {
+    next(e);
+  }
 };
-
-exports.getById = (req, res, next) => {
-  models.drugs.findById(req.params.id)
-    .then(function (drugs) {
-      res.send({
-        success: true,
-        message: '',
-        data: drugs
-      });
-    })
-};
-
 
 exports.getByName = async (req, res, next) => {
-    models.drugs.findAll({where: {country_id: req.params.id}})
+  try {
+    const elements = await repository.findByName(req.userId, req.query.name);
+    // const drugs = await models.sequelize.query("SELECT id, name FROM users where name like ?", { replacements: [ '%' + req.query.name+ '%'], type: models.sequelize.QueryTypes.SELECT });
 
-    const drugs = await sequelize.query("SELECT id, name FROM `drugs` where name like ? ", { replacements: [req.query.name], type: QueryTypes.SELECT });
-    
-    res.send({
-          success: true,
-          message: '',
-          data: drugs
-    });     
-  };
-  
-
-
-exports.post = (req, res, next) => {
-  models.drugs.create(req.body)
-    .then(function () {
-      res.send({
-        success: true,
-        message: 'Drug created',
-        data: null
-      });
-    })
+    res.status(200).send(elements);
+  } catch (error) {
+    next(error);
+  }
 };
 
-exports.put = (req, res, next) => {
-  models.drugs.update(req.body, {
-    where: {
-      id: req.body.id
-    }
-  }).then(() => {
-    res.status(200).send({
-      success: true,
-      message: 'Drug updated!',
-      data: null
-    });
-  });
+exports.getById = async (req, res, next) => {
+  try {
+    const element = await repository.getById(req.params.id);
+
+    res.status(200).send(element);
+  } catch (e) {
+    next(e);
+  }
 };
 
-exports.delete = (req, res, next) => {
-  models.drugs.destroy({
-    where: {
-      id: req.params.id
-    }
-  }).then(() => {
-    res.status(200).send({
-      success: true,
-      message: 'Drug deleted!',
-      data: null
-    });
-  });
+exports.post = async (req, res, next) => {
+  try {
+
+    const element = await repository.create(req.body);
+
+    res.status(201).send(element);
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.put = async (req, res, next) => {
+  try {
+    const element = await repository.update(req.userId, req.body);
+    res.status(200).send(element);
+  } catch (error) {
+    next(error)
+  }
+};
+
+exports.delete = async (req, res, next) => {
+  try {
+    await repository.inactivate(req.params.id);
+    res.status(200).send({});
+  } catch (error) {
+    next(error)
+  }
 };

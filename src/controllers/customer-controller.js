@@ -1,79 +1,79 @@
-'use strict';
-const models = require('../models');
+"use strict";
+
+
+const repository = require("../repositories/customer-repository");
 
 exports.get = async (req, res, next) => {
-  models.customers.findAll()
-    .then(function (customers) {
-      res.send({
-        success: true,
-        message: '',
-        data: customers
-      });
-    })
+  try {
+    const elements = await repository.findAll(req.userId);
+
+    res.send({
+      success: true,
+      message: "",
+      data: elements,
+    });
+  } catch (e) {
+    next(e);
+  }
 };
 
+exports.getByName = async (req, res, next) => {
+  try {
+    const elements = await repository.findByName(req.userId, req.query.name);
+    // const customers = await models.sequelize.query("SELECT id, name FROM users where name like ?", { replacements: [ '%' + req.query.name+ '%'], type: models.sequelize.QueryTypes.SELECT });
 
-exports.getByName =  async (req, res, next) => {
-
-  const customers = await models.sequelize.query("SELECT id, name FROM users where name like ?", { replacements: [ '%' + req.query.name+ '%'], type: models.sequelize.QueryTypes.SELECT });
-  
-  res.send({
-        success: true,
-        message: '',
-        data: null
-  }); 
-  
+    res.send({
+      success: true,
+      message: "",
+      data: elements,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 exports.getById = async (req, res, next) => {
+  try {
+    const element = await repository.getById(req.params.id);
 
-  try{
-    const customer = await models.customers.findByPk(req.params.id)
-    
-      res.send({
-        success: true,
-        message: '',
-        data: customer
-      });
-   
-  }catch(e){
-      e.status = 400;
-      next(e);
+    res.send({
+      success: true,
+      message: "",
+      data: element,
+    });
+  } catch (e) {
+    next(e);
   }
-  
 };
 
 exports.post = async (req, res, next) => {
-  models.customers.create(req.body)
-    .then(function () {
-      res.redirect('/customers');
-    })
+  try {
+
+    const element = await repository.create(req.body);
+
+    res.send({
+      success: true,
+      message: "",
+      data: element,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 exports.put = async (req, res, next) => {
-  models.customers.update(req.body, {
-    where: {
-      id: req.body.id
-    }
-  }).then(() => {
-    res.status(200).send({
+  try {
+    const element = await repository.update(req.userId, req.body);
+    res.send({
       success: true,
-      message: 'Customer updated!',
-      data: null
+      message: "",
+      data: element,
     });
-  });
+  } catch (error) {
+    next(error)
+  }
 };
 
 exports.delete = async (req, res, next) => {
-  models.customers.destroy({
-    where: {
-      id: req.params.id
-    }
-  }).then(() => {
-    res.status(200).send({
-      success: true,
-      message: 'Customer deleted!',
-      data: null
-    });
-  });
+  await repository.inactivate(req.params.id)
 };
