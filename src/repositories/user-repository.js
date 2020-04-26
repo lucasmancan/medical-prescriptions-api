@@ -18,7 +18,7 @@ exports.populate = async () => {
   for(let i = 0; i < 100; i ++){
     await models.users.create({
       name:" data.name",
-      email: "lucasfmancan@gmail.com"+Math.random(),
+      email: "lucasfmancan@gmail.com12",
       document: 12312312312,
       password: md5("123456" + Math.random() + global.API_KEY),
     });  
