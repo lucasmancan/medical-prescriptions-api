@@ -4,12 +4,8 @@ const models = require("../models");
 
 const { NotFoundError } = require("../exceptions/NotFoundError");
 
-exports.findAll = async (userId) => {
-  return await models.drugs.findAll({
-    where: {
-      userId: userId
-    }
-  });
+exports.findAll = async () => {
+  return await models.drugs.findAll();
 };
 
 exports.getById = async (id) => {
@@ -34,10 +30,10 @@ exports.findByName = async (userId, name) => {
 };
 
 exports.update = async (id, data) => {
-  return await models.drugs.update(data.id, {
+  return await models.drugs.update(data, {
     where: {
       id: id
-    },
+    }
   });
 };
 
@@ -46,5 +42,9 @@ exports.inactivate = async (id) => {
 
   element.active = false;
 
-  return await models.drugs.update(customer);
+  return await models.users.update(element, {
+    where: {
+      id: id
+    }
+  });
 };

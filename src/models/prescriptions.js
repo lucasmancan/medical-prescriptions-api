@@ -23,7 +23,7 @@ module.exports = (sequelize, Sequelize) => {
     Prescription.associate = function (models) {
         Prescription.hasMany(models.items);
         Prescription.belongsTo(models.customers);
-        Prescription.hasOne(models.users);
+        Prescription.belongsTo(models.users);
 
     };
 

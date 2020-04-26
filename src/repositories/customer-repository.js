@@ -34,7 +34,7 @@ exports.findByName = async (userId, name) => {
 };
 
 exports.update = async (id, data) => {
-  return await models.customers.update(data.id, {
+  return await models.customers.update(data, {
     where: {
       id: id
     },
@@ -46,5 +46,9 @@ exports.inactivate = async (id) => {
 
   element.active = false;
 
-  return await models.customers.update(customer);
+  return await models.users.update(element, {
+    where: {
+      id: id
+    }
+  });
 };

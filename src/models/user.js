@@ -42,11 +42,10 @@ module.exports = (sequelize, Sequelize) => {
         tableName: 'users',
     });
 
-    // User.associate = function (models) {
-    //     User.hasMany(models.phones);
-    //     User.belongsTo(models.addresses);
-    //     User.belongsTo(models.profiles);
-    // };
+    User.associate = function (models) {
+        User.hasMany(models.customers);
+        User.hasMany(models.prescriptions);
+    };
 
     return User;
 }

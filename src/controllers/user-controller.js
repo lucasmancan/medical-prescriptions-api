@@ -20,10 +20,12 @@ exports.post = async (req, res, next) => {
 
     const id = user.id;
 
+
     const resp = {};
     resp.user = user;
     resp.token = await authRepository.createToken(id);
     // email.sendEmail(User.email);
+    console.log(id, resp)
 
     return res.status(201).send(resp);
   } catch (error) {

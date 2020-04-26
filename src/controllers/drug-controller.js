@@ -5,7 +5,7 @@ const repository = require("../repositories/drug-repository");
 
 exports.get = async (req, res, next) => {
   try {
-    const elements = await repository.findAll(req.userId);
+    const elements = await repository.findAll();
 
     res.status(200).send(elements);
   } catch (e) {

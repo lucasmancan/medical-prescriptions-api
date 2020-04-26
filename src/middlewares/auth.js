@@ -12,7 +12,7 @@ module.exports = (req, res, next) => {
             if (err)
               throw new Error("Error..");
 
-            req.userId = decoded.id;
+            req.userId = decoded.userId;
     
             next();
         });

@@ -34,10 +34,10 @@ exports.findByCustomerName = async (userId, customerName) => {
 };
 
 exports.update = async (id, data) => {
-  return await models.prescriptions.update(data.id, {
+  return await models.prescriptions.update(data, {
     where: {
       id: id
-    },
+    }
   });
 };
 
@@ -46,5 +46,9 @@ exports.inactivate = async (id) => {
 
   element.active = false;
 
-  return await models.prescriptions.update(customer);
+  return await models.users.update(element, {
+    where: {
+      id: id
+    }
+  });
 };
