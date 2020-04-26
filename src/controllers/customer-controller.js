@@ -49,6 +49,9 @@ exports.getById = async (req, res, next) => {
 exports.post = async (req, res, next) => {
   try {
 
+
+    req.body.userId = req.userId;
+
     const element = await repository.create(req.body);
 
     res.send({

@@ -4,7 +4,7 @@ const models = require("../models");
 
 const { NotFoundError } = require("../exceptions/NotFoundError");
 
-exports.getAll = async (userId) => {
+exports.findAll = async (userId) => {
   return await models.drugs.findAll({
     where: {
       userId: userId

@@ -4,7 +4,7 @@ const models = require("../models");
 const email = require("../mail");
 const { NotFoundError } = require("../exceptions/NotFoundError");
 
-exports.getAll = async (userId) => {
+exports.findAll = async (userId) => {
   return await models.customers.findAll({
     where: {
       userId: userId

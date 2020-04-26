@@ -36,6 +36,8 @@ module.exports = (sequelize, Sequelize) => {
 
     Customer.associate = function (models) {
         Customer.hasMany(models.prescriptions);
+        Customer.belongsTo(models.users);
+
     };
 
     return Customer;
