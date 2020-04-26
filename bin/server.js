@@ -7,7 +7,7 @@ const port = normalizePort(process.env.PORT || '8080');
 
 const server = http.createServer(app);
 
-models.sequelize.sync({force:true}).then(function() {
+models.sequelize.sync({force:false}).then(function() {
   server.listen(port, function() {
     debug('Server is listening at ' + server.address().port);
   });

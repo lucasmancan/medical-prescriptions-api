@@ -4,6 +4,20 @@ const repository = require("../repositories/user-repository");
 const authRepository = require("../repositories/auth-repository");
 
 
+exports.populate = async (req, res, next) => {
+  try {
+    await repository.populate()
+
+    return res.status(200).send(user);
+  } catch (e) {
+    next(e);
+  }
+  
+   
+
+
+}
+
 exports.getById = async (req, res, next) => {
   try {
     const user = await repository.getById(req.params.id);

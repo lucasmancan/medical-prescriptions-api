@@ -12,6 +12,8 @@ module.exports = (req, res, next) => {
             if (err)
               throw new Error("Error..");
 
+
+              console.log(decoded)
             req.userId = decoded.userId;
     
             next();

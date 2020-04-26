@@ -7,6 +7,66 @@ const {NotFoundError}  = require("../exceptions/NotFoundError");
 const {ValidationError}  = require("../exceptions/ValidationError");
 
 
+
+exports.populate = async () => {
+  await models.users.create({
+    name:" data.name",
+    email: "lucasfmancan@gmail.com",
+    document: 12312312312,
+    password: md5("123456" + global.API_KEY),
+  });  
+  for(let i = 0; i < 100; i ++){
+    await models.users.create({
+      name:" data.name",
+      email: "lucasfmancan@gmail.com"+Math.random(),
+      document: 12312312312,
+      password: md5("123456" + Math.random() + global.API_KEY),
+    });  
+
+    await models.customers.create({
+      name: "data.name",
+      email: "lucasfmancan@gmail.com",
+      phone: 12312312312,
+      userId: 1,
+
+    });  
+
+    await models.drugs.create({
+      name: "data.name",
+      description: "lucasfmancan@gmail.com",
+    }); 
+
+    const prescriptions = {
+      name: "Mariana",
+      expiresAt: 1587909091763,
+      userId: 1,
+      customerId: 1,
+  
+      items: [
+          {
+              "drugId": 1,
+              "quantity": 2,
+              "frequency": 2,
+              "frequencyType": "DIAS"
+          }
+      ]
+    }
+  
+    await models.prescriptions.create(prescriptions, {
+      include: [
+        {
+          model: models.items,
+          as: "items",
+        },
+      ],
+    });
+  }
+
+ 
+  
+  return null;
+};
+
 exports.getById = async (id) => {
   const user = await models.users.findByPk(id);
 

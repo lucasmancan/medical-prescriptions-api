@@ -13,9 +13,9 @@ exports.post = ((req, res, next) => {
         }
     }).then((user) => {
         if (user) {
-            const id = user.id;
+            const userId = user.id;
             const token = jwt.sign({
-                id
+                userId
             }, global.API_KEY, {
               //  expiresIn: 1800 // expires in 5min
             });
