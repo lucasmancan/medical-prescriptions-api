@@ -4,4 +4,5 @@ const controller = require('../controllers/auth-controller');
 
 router.post('/', controller.post);
 
+
 module.exports = router;

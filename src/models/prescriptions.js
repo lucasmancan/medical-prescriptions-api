@@ -12,7 +12,21 @@ module.exports = (sequelize, Sequelize) => {
         },
         signature: {
             type: Sequelize.TEXT,            
-        }
+        },
+        userId: {
+            type: Sequelize.INTEGER,
+            references: {
+               model: 'users', // 'persons' refers to table name
+               key: 'id', // 'id' refers to column name in persons table
+            }
+         },
+        customerId: {
+            type: Sequelize.INTEGER,
+            references: {
+               model: 'customers', // 'persons' refers to table name
+               key: 'id', // 'id' refers to column name in persons table
+            }
+         }
     }, {
         timestamps: true,
         underscored: false,

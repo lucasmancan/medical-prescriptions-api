@@ -26,7 +26,14 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.BOOLEAN,
             allowNull: false,
             defaultValue: true
-        }
+        },
+        userId: {
+            type: Sequelize.INTEGER,
+            references: {
+               model: 'users', // 'persons' refers to table name
+               key: 'id', // 'id' refers to column name in persons table
+            }
+         }
     }, {
         timestamps: true,
         underscored: false,

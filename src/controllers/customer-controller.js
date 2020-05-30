@@ -7,6 +7,9 @@ exports.get = async (req, res, next) => {
   try {
     const elements = await repository.findAll(req.userId);
 
+
+    console.log(elements)
+
     res.send({
       success: true,
       message: "",
@@ -52,9 +55,8 @@ exports.post = async (req, res, next) => {
 
     req.body.userId = req.userId;
 
-    console.log(req.body)
 
-    const element = await repository.create(req.body);
+    const element = await repository.save(req.body);
 
     res.send({
       success: true,

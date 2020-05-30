@@ -33,6 +33,8 @@ app.use((error, req, res, next) => {
       status = 400;
   }
 
+  console.error(error);
+  
   res.status(status).send({
     error: {
       status: status,

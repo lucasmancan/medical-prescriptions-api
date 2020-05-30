@@ -37,7 +37,7 @@ exports.getById = async (req, res, next) => {
 exports.post = async (req, res, next) => {
   try {
 
-    const element = await repository.create(req.body);
+    const element = await repository.save(req.body);
 
     res.status(201).send(element);
   } catch (error) {

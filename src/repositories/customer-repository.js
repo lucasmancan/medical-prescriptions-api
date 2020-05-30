@@ -33,6 +33,21 @@ exports.findByName = async (userId, name) => {
   });
 };
 
+
+exports.save = async (data) => {
+
+  let entity = null;
+
+  if(data.id) {
+    entity = await this.update(data.id, data);
+  }else {
+    entity = await this.create(data);
+  }
+
+  return entity;
+};
+
+
 exports.update = async (id, data) => {
   return await models.customers.update(data, {
     where: {

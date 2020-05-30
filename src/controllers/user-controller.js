@@ -13,9 +13,6 @@ exports.populate = async (req, res, next) => {
     next(e);
   }
   
-   
-
-
 }
 
 exports.getById = async (req, res, next) => {

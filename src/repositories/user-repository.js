@@ -15,10 +15,12 @@ exports.populate = async () => {
     document: 12312312312,
     password: md5("123456" + global.API_KEY),
   });  
+
   for(let i = 0; i < 100; i ++){
+
     await models.users.create({
       name:" data.name",
-      email: "lucasfmancan@gmail.com",
+      email: "lucasfmancan"+i+"@gmail.com",
       document: 12312312312,
       password: md5("123456" + Math.random() + global.API_KEY),
     });  
@@ -46,9 +48,13 @@ exports.populate = async () => {
           {
               "drugId": 1,
               "quantity": 2,
-              "frequency": 2,
-              "frequencyType": "DIAS"
-          }
+              "detail": "asdasdas"
+          },
+          {
+            "drugId": 1,
+            "quantity": 2,
+            "detail": "asdasdas"
+        }
       ]
     }
   
@@ -66,6 +72,21 @@ exports.populate = async () => {
   
   return null;
 };
+
+
+exports.save = async (data) => {
+
+  let entity = null;
+
+  if(data.id) {
+    entity = await this.update(data.id, data);
+  }else {
+    entity = await this.create(data);
+  }
+
+  return entity;
+};
+
 
 exports.getById = async (id) => {
   const user = await models.users.findByPk(id);

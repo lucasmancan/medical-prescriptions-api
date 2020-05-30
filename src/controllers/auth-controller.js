@@ -3,34 +3,33 @@ const models = require('../models');
 const md5 = require('md5');
 const jwt = require('jsonwebtoken');
 //GLOBAL API_KEY NEEDS TO BE CREATED
+const userRepository = require('../repositories/user-repository');
+const authRepository = require('../repositories/auth-repository');
+const {AuthenticationError} = require('../exceptions/AuthenticationError');
 
+exports.post = async (req, res, next) => {
 
-exports.post = ((req, res, next) => {
-    models.users.findOne({
-        where: {
-            email: req.body.email,
-            password: md5(req.body.password + global.API_KEY)
+    try {
+
+        const user = await models.users.findOne({
+            where: {
+                email: req.body.email,
+                password: md5(req.body.password + global.API_KEY)
+            }
+        });
+
+        if(!user){
+            throw new AuthenticationError("Credenciais inválidas")
         }
-    }).then((user) => {
-        if (user) {
-            const userId = user.id;
-            const token = jwt.sign({
-                userId
-            }, global.API_KEY, {
-              //  expiresIn: 1800 // expires in 5min
-            });
 
-            res.status(200).send({
-                success: true,
-                message: "Successfully authenticated!",
-                data: token
-            });
-        } else {
-            res.status(404).send({
-                success: false,
-                message: 'Username or password may be incorrect!',
-                data: null
-            });
-        }
-    });
-});
+        const token = await authRepository.createToken(user.id);
+
+        res.send({
+            success: true,
+            message: '',
+            data: token
+        })
+    } catch (error) {
+        next(error);
+    }
+}
